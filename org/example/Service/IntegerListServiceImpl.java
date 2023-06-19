@@ -9,12 +9,8 @@ import java.util.Arrays;
 
 public class IntegerListServiceImpl implements IntegerListService {
 
-    private final Integer[] items;
-    private int size;
-
-    public IntegerListServiceImpl() {
-        items = new Integer[10];
-    }
+    private Integer[] items;
+    int size = 0;
 
     public IntegerListServiceImpl(int initSize) {
         items = new Integer[initSize];
@@ -38,6 +34,76 @@ public class IntegerListServiceImpl implements IntegerListService {
         }
     }
 
+    public static void bubbleSort(IntegerListServiceImpl list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = 0; j < list.size() - 1; j++) {
+                if (list.get(j) > list.get(j + 1)) {
+                    swap(list, j, j + 1);
+                }
+            }
+        }
+    }
+
+    public static void selectionSort(IntegerListServiceImpl list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < list.size(); j++) {
+                if (list.get(j) < list.get(minIndex)) {
+                    minIndex = j;
+                }
+            }
+            swap(list, i, minIndex);
+        }
+    }
+
+    public static void insertionSort(IntegerListServiceImpl list) {
+        for (int i = 1; i < list.size(); i++) {
+            int current = list.get(i);
+            int j = i;
+            while (j > 0 && list.get(j - 1) > current) {
+                list.set(j, list.get(j - 1));
+                j--;
+            }
+            list.set(j, current);
+        }
+    }
+
+    private void privateInsertionSort() {
+        for (int i = 1; i < items.length; i++) {
+            if (items[i] != null) {
+                int current = items[i];
+                int j = i;
+                while (j > 0 && items[j - 1] > current) {
+                    items[j] = items[j - 1];
+                    j--;
+                }
+                items[j] = current;
+            }
+        }
+    }
+
+    private boolean binarySearch(Integer x) {
+        int min = 0;
+        int max = this.size() - 1;
+        while (min <= max) {
+            int mid = (max + min) / 2;
+            if (items[mid].equals(x)) {
+                return true;
+            }
+            if (x < items[mid]) {
+                max = mid - 1;
+            } else {
+                min = mid +1;
+            }
+        }
+        return false;
+    }
+
+    private static void swap(IntegerListServiceImpl list, int index1, int index2) {
+        int tmp = list.get(index1);
+        list.set(index1, list.get(index2));
+        list.set(index2, tmp);
+    }
 
     public Integer add(Integer item) {
         validateSize();
